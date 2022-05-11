@@ -59,8 +59,8 @@ class Todo extends React.Component
 
        // const {myItem:item, readOnly} = this.state; // ES6,  구조 분해할당 문법
 
-        const item = this.state.item;
-        const readOnly = this.state.readOnly;
+        const {item} = this.props;
+        const {readOnly} = this.state;
 
 
         const htmlId = 'todo-' + item.id;

@@ -3,6 +3,7 @@ import React from 'react';
 import AddTodo from './AddTodo';
 import Todo from './Todo';
 import {Paper, List, Container} from '@mui/material';
+import { RepeatOn } from '@mui/icons-material';
 
 // npm -> Node Package eXension
 // jsx -> JavaScript eXenstion
@@ -19,15 +20,34 @@ class App extends React.Component{
     super(props);
     this.state = {
       items : [
-        {id : 1,title : "자바 공부하기", done : true},
-        {id : 2,title : "스프링 공부하기", done : false},
-        {id : 3,title : "스프링 공부하기2", done : false},
+       
       ]
     }
   }
 
   componentDidMount(){
-    console.log('App.componentDidMount()')
+    console.log('App.componentDidMount()');
+    
+    const requestOptions ={
+      method : "GET",
+      header : {"Content-Type" : "application/json"}
+    };
+
+    fetch("http://localhost:8080/todo", requestOptions)
+    .then(res => {
+      console.log(res);
+      return res.json();})
+    // .then(res => res.json()) // 위랑 같은 의미 
+    .then(
+      res => {
+        this.setState({items : res.data})
+      },
+      error => {
+        this.setState({error :error})
+        //items: [{id:0,title:"오류발생",done:false}]
+      }
+    )
+
   }
 
   shouldComponentUpdate(nextProps,nextState,nextContext){
@@ -84,8 +104,8 @@ class App extends React.Component{
     console.log('oldItems : ', thisItems);
     const newItems =  thisItems.filter(item => item.id !== deletingItem.id);
     console.log('newItems : ', newItems);
-    this.setState({items:newItems}, () =>{
-      console.log('curItems ',this.state.items);
+    this.setState({items: []}, () => {
+      this.setState({items: newItems});
     });
   }
 
