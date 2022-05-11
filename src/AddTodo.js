@@ -15,13 +15,15 @@ class AddTodo extends React.Component {
     // console.log(thisItem);
   }
 
+  // Loosely Coupling, Strongly cohesion
+
   onButtonClick = () => {
     const thisItem = this.state.item;
-    if (thisItem.title === '') {
+    if (thisItem.title.trim() === '') {
       alert('Todo 제목을 입력해 주세요.');
-      return;
+    }else{
+      this.addTodo(thisItem);
     }
-    this.addTodo(thisItem);
     this.setState({item: {title: ""}});
   }
 
@@ -31,14 +33,16 @@ class AddTodo extends React.Component {
     }
   }
 
+
+
   render() {
     const {item} = this.state;
 
     return (
-      <Paper style={{margin: 16, padding: 16}}>
+      <Paper style={{margin: 16, padding: 16}} elevation={10}>
         <Grid container>
           <Grid xs={11} md={11} item style={{paddingRight: 16}}>
-            <TextField placeholder="Add Todo here" fullWidth
+            <TextField fullWidth hiddenLabel size='small' variant="filled" placeholder="Add Todo here" 
               value={item.title}
               onChange={this.onInputChange}
               onKeyPress={this.onPressEnter}

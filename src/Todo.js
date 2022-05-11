@@ -1,6 +1,6 @@
 import React from "react";
-import {ListItem, ListItemText, InputBase, Checkbox} from "@mui/material"
-
+import {ListItem, ListItemText, InputBase, Checkbox, ListItemButton, ListItemSecondaryAction, IconButton} from "@mui/material";
+import {DeleteOutlined} from "@mui/icons-material";
 // state -> 해당 컴포넌트 내의 상태 관리용 변수
 // props -> 하위 컴포넌트로 데이터 전달용
 
@@ -12,6 +12,7 @@ class Todo extends React.Component
         super(props); // 생성자에서는 super 있어야함
         this.state = { item : props.item, readOnly : true};
         this.editTodo = props.edit;
+        this.deleteTodo = props.delete;
     }
 
     onInputChange = e => {
@@ -44,6 +45,9 @@ class Todo extends React.Component
         
         */
     }
+    onDeleteButtonClick = () => {
+        this.deleteTodo(this.state.item);
+    }
 
     render() {
         //JSX -> 표준 JS (Babel -> 트랜스파일링)
@@ -63,22 +67,30 @@ class Todo extends React.Component
 
         return (// JSX -> JS + HTML
             <ListItem>
-                <Checkbox checked={item.done} onClick={this.onCheckboxClick} />
-                <ListItemText>
-                <InputBase
-                    readOnly={readOnly}
-                    onChange={this.onInputChange}
-                    onKeyPress={this.onPressEnter}
-                    onClick={this.onInputClick}
-                    inputProps={{"arial-label": "naked"}}
-                    type="text"
-                    id={htmlId}
-                    name={htmlId}
-                    value={item.title}
-                    multiline={true}
-                    fullWidth={true}
-                />
-                </ListItemText>
+                <ListItemButton>
+                    <Checkbox checked={item.done} onClick={this.onCheckboxClick} />
+                    <ListItemText>
+                    <InputBase
+                        readOnly={readOnly}
+                        onChange={this.onInputChange}
+                        onKeyPress={this.onPressEnter}
+                        onClick={this.onInputClick}
+                        inputProps={{"arial-label": "naked"}}
+                        type="text"
+                        id={htmlId}
+                        name={htmlId}
+                        value={item.title}
+                        multiline={true}
+                        fullWidth={true}
+                    />
+                    </ListItemText>
+
+                    <ListItemSecondaryAction>
+                        <IconButton aria-label="Delete Todo" onClick={this.onDeleteButtonClick}>
+                            <DeleteOutlined />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItemButton>
             </ListItem>
         )
     }

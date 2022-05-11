@@ -21,8 +21,28 @@ class App extends React.Component{
       items : [
         {id : 1,title : "자바 공부하기", done : true},
         {id : 2,title : "스프링 공부하기", done : false},
+        {id : 3,title : "스프링 공부하기2", done : false},
       ]
     }
+  }
+
+  componentDidMount(){
+    console.log('App.componentDidMount()')
+  }
+
+  shouldComponentUpdate(nextProps,nextState,nextContext){
+    console.log('App.shouldComponentUpdate()');
+    console.info(nextState);
+    return true;
+  }
+
+  componentDidUpdate(prevProps,prevState,snapshot){
+    console.log('App.componentDidUpdate()');
+    console.info(prevState);
+  }
+
+  componentWillUnmount(){
+    console.log('App.componentWillUnmount()');
   }
 
   add = (item) => {
@@ -58,8 +78,20 @@ class App extends React.Component{
 
   }
 
+  delete = (deletingItem) =>{
+    const thisItems = this.state.items;
+    console.log('dd : ',deletingItem);
+    console.log('oldItems : ', thisItems);
+    const newItems =  thisItems.filter(item => item.id !== deletingItem.id);
+    console.log('newItems : ', newItems);
+    this.setState({items:newItems}, () =>{
+      console.log('curItems ',this.state.items);
+    });
+  }
+
   render(){
     const items = this.state.items;
+    console.log("render()", items);
 /*
     // 사용하고 있지 않음
     let todos = [];
@@ -97,10 +129,10 @@ class App extends React.Component{
         <Container maxWidth="md">
           <AddTodo add={this.add} />
           <div className="TodoList">
-            <Paper style={{margin: 16}}>
+            <Paper style={{margin: 16}} elevation={10}>
               <List>
                 {items.map((item, idx) => (
-                  <Todo item={item} edit={this.edit}  key={idx} />
+                  <Todo item={item} edit={this.edit} delete={this.delete}  key={idx} />
                 ))}
               </List>
             </Paper>
