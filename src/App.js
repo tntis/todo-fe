@@ -3,7 +3,7 @@ import React from 'react';
 import AddTodo from './AddTodo';
 import Todo from './Todo';
 import {Paper, List, Container} from '@mui/material';
-import { RepeatOn } from '@mui/icons-material';
+import {call} from './service/ApiService';
 
 // npm -> Node Package eXension
 // jsx -> JavaScript eXenstion
@@ -27,7 +27,12 @@ class App extends React.Component{
 
   componentDidMount(){
     console.log('App.componentDidMount()');
-    
+   
+    call("/todo","GET", null).then(data =>{
+      console.log('GET /todo >> ',data);
+      this.setState({items : data});
+    })
+
     const requestOptions ={
       method : "GET",
       header : {"Content-Type" : "application/json"}
@@ -39,10 +44,10 @@ class App extends React.Component{
       return res.json();})
     // .then(res => res.json()) // 위랑 같은 의미 
     .then(
-      res => {
-        this.setState({items : res.data})
+      data => { //HTTP Response  Status Code < 400
+        this.setState({items : data})
       },
-      error => {
+      error => { //HTTP Response  Status Code < 400
         this.setState({error :error})
         //items: [{id:0,title:"오류발생",done:false}]
       }
@@ -66,47 +71,25 @@ class App extends React.Component{
   }
 
   add = (item) => {
-    const thisItems = this.state.items;
-    const newItem = {
-      id: thisItems.length + 1,
-      title: item.title,
-      done: false
-    }
-    thisItems.push(newItem);
-    this.setState({items: thisItems});
-    console.log(thisItems);
+
+    call("/todo","POST", item).then(data => {
+      console.log('POST /todo >> ',data);
+      this.setState({items : data});
+    })
   }
 
   edit = (newItem) => {
-    const thisItems = this.state.items;
-    /*
-    // Legacy Style
-    for(let i = 0; i< thisItems.length; i++){
-      if(thisItems[i].id === newItem.id){
-        thisItems[i].title = newItem.title;
-        thisItems[i].done = newItem.done;
-      }
-    }
-    */
-    thisItems.filter(item => item.id === newItem.id)
-      .forEach(item =>{
-        item.title = newItem.title;
-        item.done = newItem.done;
-      });
-    this.setState({items : thisItems});
-    console.log(this.state.items);
-
+    call("/todo","PUT", newItem).then(data =>{
+      console.log('PUT /todo >> ',data);
+      this.setState({items : data});
+    })
   }
 
   delete = (deletingItem) =>{
-    const thisItems = this.state.items;
-    console.log('dd : ',deletingItem);
-    console.log('oldItems : ', thisItems);
-    const newItems =  thisItems.filter(item => item.id !== deletingItem.id);
-    console.log('newItems : ', newItems);
-    this.setState({items: []}, () => {
-      this.setState({items: newItems});
-    });
+    call("/todo","DELETE", deletingItem).then(data =>{
+      console.log('DELETE /todo >> ',data);
+      this.setState({items : data});
+    })
   }
 
   render(){
