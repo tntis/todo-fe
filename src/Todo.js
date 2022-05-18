@@ -15,16 +15,20 @@ class Todo extends React.Component
         this.deleteTodo = props.delete;
     }
 
+    shouldComponentUpdate(nextProps,nextState,nextContext){
+        console.log('App.shouldComponentUpdate()');
+        return true;
+      }
     onInputChange = e => {
-        const thisItem = this.state.item;
+        const thisItem = this.props.item;
         thisItem.title = e.target.value;
-        this.setState({item: thisItem});
+        this.setState({item : thisItem});
         // console.log(thisItem);
       }
     
     onPressEnter = e => {
         if (e.key === 'Enter') {
-            this.editTodo(this.state.item);
+            this.editTodo(this.props.item);
             this.setState({readOnly : true});
         }
     }
@@ -34,9 +38,8 @@ class Todo extends React.Component
     }
     
     onCheckboxClick = e =>{
-        const thisItem = this.state.item;
+        const thisItem = this.props.item;
         thisItem.done = e.target.checked;
-        this.setState({item :thisItem});
         this.editTodo(thisItem);
         /*
         const {editTodoItem, item} = this.state;
@@ -46,7 +49,7 @@ class Todo extends React.Component
         */
     }
     onDeleteButtonClick = () => {
-        this.deleteTodo(this.state.item);
+        this.deleteTodo(this.props.item);
     }
 
     render() {

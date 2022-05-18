@@ -19,9 +19,7 @@ class App extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      items : [
-       
-      ]
+      items : []
     }
   }
 
@@ -57,13 +55,13 @@ class App extends React.Component{
 
   shouldComponentUpdate(nextProps,nextState,nextContext){
     console.log('App.shouldComponentUpdate()');
-    console.info(nextState);
     return true;
   }
 
   componentDidUpdate(prevProps,prevState,snapshot){
     console.log('App.componentDidUpdate()');
-    console.info(prevState);
+    console.log(this.state);
+    
   }
 
   componentWillUnmount(){
@@ -127,6 +125,10 @@ class App extends React.Component{
     // .map((item, idx) => <Todo item={item} key={idx} />);
 
 */
+    const todoItems = items.map((item, idx) => (
+      <Todo item={item} edit={this.edit} delete={this.delete}  key={idx} />
+    ));
+
     return ( // JSX
       <div className="App">
         <Container maxWidth="md">
@@ -134,9 +136,7 @@ class App extends React.Component{
           <div className="TodoList">
             <Paper style={{margin: 16}} elevation={10}>
               <List>
-                {items.map((item, idx) => (
-                  <Todo item={item} edit={this.edit} delete={this.delete}  key={idx} />
-                ))}
+                {todoItems}
               </List>
             </Paper>
           </div>
