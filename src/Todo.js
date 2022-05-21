@@ -20,7 +20,7 @@ class Todo extends React.Component
         return true;
       }
     onInputChange = e => {
-        const thisItem = this.props.item;
+        const thisItem = this.state.item;
         thisItem.title = e.target.value;
         this.setState({item : thisItem});
         // console.log(thisItem);
@@ -28,7 +28,7 @@ class Todo extends React.Component
     
     onPressEnter = e => {
         if (e.key === 'Enter') {
-            this.editTodo(this.props.item);
+            this.editTodo(this.state.item);
             this.setState({readOnly : true});
         }
     }
@@ -38,7 +38,7 @@ class Todo extends React.Component
     }
     
     onCheckboxClick = e =>{
-        const thisItem = this.props.item;
+        const thisItem = this.state.item;
         thisItem.done = e.target.checked;
         this.editTodo(thisItem);
         /*
@@ -49,7 +49,7 @@ class Todo extends React.Component
         */
     }
     onDeleteButtonClick = () => {
-        this.deleteTodo(this.props.item);
+        this.deleteTodo(this.state.item);
     }
 
     render() {
@@ -62,8 +62,7 @@ class Todo extends React.Component
 
        // const {myItem:item, readOnly} = this.state; // ES6,  구조 분해할당 문법
 
-        const {item} = this.props;
-        const {readOnly} = this.state;
+        const {item, readOnly} = this.state;
 
 
         const htmlId = 'todo-' + item.id;

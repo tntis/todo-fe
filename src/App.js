@@ -126,7 +126,7 @@ class App extends React.Component{
 
 */
     const todoItems = items.map((item, idx) => (
-      <Todo item={item} edit={this.edit} delete={this.delete}  key={idx} />
+      <Todo item={item} edit={this.edit} delete={this.delete} key={item.id} />
     ));
 
     return ( // JSX
