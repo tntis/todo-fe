@@ -16,6 +16,9 @@ import {call} from './service/ApiService';
 // CRA -> Create React App
 
 class App extends React.Component{
+
+  static API_BASE_PATH_TODO = '/todo/v7';
+
   constructor(props){
     super(props);
     this.state = {
@@ -26,7 +29,7 @@ class App extends React.Component{
   componentDidMount(){
     console.log('App.componentDidMount()');
    
-    call("/todo","GET", null).then(data =>{
+    call(App.API_BASE_PATH_TODO,"GET", null).then(data =>{
       console.log('GET /todo >> ',data);
       this.setState({items : data});
     })
@@ -35,7 +38,7 @@ class App extends React.Component{
       method : "GET",
       header : {"Content-Type" : "application/json"}
     };
-
+/*
     fetch("http://localhost:8080/todo", requestOptions)
     .then(res => {
       console.log(res);
@@ -50,7 +53,7 @@ class App extends React.Component{
         //items: [{id:0,title:"오류발생",done:false}]
       }
     )
-
+*/
   }
 
   shouldComponentUpdate(nextProps,nextState,nextContext){
@@ -70,21 +73,21 @@ class App extends React.Component{
 
   add = (item) => {
 
-    call("/todo","POST", item).then(data => {
+    call(App.API_BASE_PATH_TODO,"POST", item).then(data => {
       console.log('POST /todo >> ',data);
       this.setState({items : data});
     })
   }
 
   edit = (newItem) => {
-    call("/todo","PUT", newItem).then(data =>{
+    call(App.API_BASE_PATH_TODO,"PUT", newItem).then(data =>{
       console.log('PUT /todo >> ',data);
       this.setState({items : data});
     })
   }
 
   delete = (deletingItem) =>{
-    call("/todo","DELETE", deletingItem).then(data =>{
+    call(App.API_BASE_PATH_TODO,"DELETE", deletingItem).then(data =>{
       console.log('DELETE /todo >> ',data);
       this.setState({items : data});
     })
